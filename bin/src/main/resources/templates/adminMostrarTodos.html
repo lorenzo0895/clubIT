@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <link th:replace="nav/nav.html :: link">
+    <link rel="stylesheet" th:href="@{/index.css}">   
+</head>
+ 
+<body>
+<header th:replace="nav/nav.html :: nav"> </header>
+<p th:text="${error}"></p>
+
+
+<div class=contenedorBotones>
+<a  th:if="${session.usersession}" class="botonPost" href="/crearPost">Postear</a>
+<a  th:if="${session.usersession != null && session.usersession.rolAdministrador}" class="botonPost" href="/admin">Rol</a>
+</div>
+
+<div class="contenedorPost">
+
+<div class="error" th:if="${#lists.isEmpty(posteos)}">No se encontraron posteos con esos filtros</div>
+ <div class="contenedor" th:each="posteo : ${posteos}">
+ <a th:href="@{/posteo/} + ${posteo.id}"> 
+        <div  class="cajaCampo">
+      	  	<div>
+       		 <b class="tituloCampo">Estado</b>
+             <b class="tituloCampo" th:text="${posteo.alta}"></b>
+       		 </div>  
+       		      
+            <b class="tituloCampo" th:text="${posteo.titulo}"></b>
+            <b class="fechaCampo"  th:text="${#dates.format(posteo.fechaPosteo, 'dd/MM/yy h:mm a')}"></b>
+            
+        </div>
+
+        <div class="cajaCampo">
+            <b class="tituloCampo" th:text="${posteo.etiqueta.nombre}"></b>
+            <b class="fechaCampo" th:text="${posteo.usuario.nombreUsuario}"></b>
+        </div>
+ </a>
+ </div>
+
+</div>		
+</body>
+
+
+</html>
